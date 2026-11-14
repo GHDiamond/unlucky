@@ -17,44 +17,45 @@ Console.Clear();
 
 // Create Range: First Date
 Console.ForegroundColor = ConsoleColor.Blue;
-int firstDateYear = AskForInt("[PROMPT] Year of first date of range", 1, 9999);
-int firstDateMonth = AskForInt("[PROMPT] Month of first date of range", 1, 12);
-DateOnly firstDate = new(firstDateYear, firstDateMonth, 13);
-string firstDateFormatted = firstDate.ToString("yyyy-MM");
+int startYear = AskForInt("[PROMPT] Year of first date of range", 1, 9999);
+int startMonth = AskForInt("[PROMPT] Month of first date of range", 1, 12);
+DateOnly start = new(startYear, startMonth, 13);
+string startFormatted = start.ToString("yyyy-MM");
 Console.ForegroundColor = ConsoleColor.Green;
-Console.WriteLine($"[SUCCESS] First date of range: {firstDateFormatted}");
+Console.WriteLine($"[SUCCESS] First date of range: {startFormatted}");
 WaitForInput();
 Console.Clear();
 
 // Create Range: Last Date
 Console.ForegroundColor = ConsoleColor.Blue;
-int lastDateYear = AskForInt("[PROMPT] Year of last date of range", 1, 9999);
-int lastDateMonth = AskForInt("[PROMPT] Month of last date of range", 1, 12);
-DateOnly lastDate = new(lastDateYear, lastDateMonth, 13);
-string lastDateFormatted = lastDate.ToString("yyyy-MM");
+int endYear = AskForInt("[PROMPT] Year of last date of range", 1, 9999);
+int endMonth = AskForInt("[PROMPT] Month of last date of range", 1, 12);
+DateOnly end = new(endYear, endMonth, 13);
+string endFormatted = end.ToString("yyyy-MM");
 Console.ForegroundColor = ConsoleColor.Green;
-Console.WriteLine($"[SUCCESS] Last date of range: {lastDateFormatted}");
+Console.WriteLine($"[SUCCESS] Last date of range: {endFormatted}");
 WaitForInput();
 Console.Clear();
 
 Console.ForegroundColor = ConsoleColor.White;
-Console.WriteLine($"Searching from range: {firstDateFormatted} - {lastDateFormatted}");
+Console.WriteLine($"Searching from range: {startFormatted} - {endFormatted}");
 WaitForInput(2);
 
 // Date searching
 int total = 0;
 Console.ForegroundColor = ConsoleColor.White;
-for (DateOnly date = firstDate; date <= lastDate;) // Increases months instead of days to save time
+for (DateOnly date = start; date <= end;) // Increases months instead of days to save time
 {
     if (date.DayOfWeek == DayOfWeek.Friday) // Checks if Friday
     {
         Console.WriteLine($"{date:yyyy-MM}");
+
         total++; // Increments the friday count since it has found a Friday 13th
     }
     date = date.AddMonths(1);
 }
 Console.ForegroundColor = ConsoleColor.Green;
-Console.WriteLine($"\n[SUCCESS] Searched withing range of {firstDateFormatted} - {lastDateFormatted} and found {total} total of Friday 13ths.");
+Console.WriteLine($"\n[SUCCESS] Searched withing range of {startFormatted} - {endFormatted} and found {total} total of Friday 13ths.");
 
 // Exit screen
 WaitForInput(0, "exit");
@@ -102,4 +103,12 @@ static void WaitForInput(int appendLines = 0, string action = "continue")
     {
         Console.WriteLine();
     }
+}
+public class Search
+{
+    public string Label { get; set; } = "";
+    public DateTime TimeStamp { get; set; }
+    public DateOnly Start { get; set; }
+    public DateOnly End { get; set; }
+    public List<DateOnly> Results { get; set; } = [];
 }
